@@ -1,0 +1,30 @@
+steps:
+  # Step 1: Build the project using Maven
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean', 'package']
+
+  # Step 2: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/organic-premise-436323-e8/cloud-run-service', '.']
+
+  # Step 3: Push the Docker image to Google Container Registry (GCR)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/organic-premise-436323-e8/cloud-run-service']
+
+  # Step 4: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'ingestionjob'
+      - '--image'
+      - 'gcr.io/organic-premise-436323-e8/cloud-run-service'
+      - '--platform'
+      - 'managed'
+      - '--region'
+      - 'us-central1'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/organic-premise-436323-e8/cloud-run-service'
