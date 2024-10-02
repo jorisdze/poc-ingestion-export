@@ -29,7 +29,7 @@ public class DatastoreService {
         // Loop through each row and write it to Datastore
         for (FieldValueList row : bigQueryData) {
             // Create a new entity with a unique key
-            KeyFactory keyFactory = datastore.newKeyFactory().setKind("YourEntityKind");
+            KeyFactory keyFactory = datastore.newKeyFactory().setKind("pocEntity");
             Key key = datastore.allocateId(keyFactory.newKey());
 
             // Map the BigQuery data to Datastore properties
